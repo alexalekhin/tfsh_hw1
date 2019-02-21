@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".fragments.CalendarFragment">
+    <TextView
+            android:text="@string/calendar_events"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" android:id="@+id/text_events" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textSize="20sp" android:textAlignment="center" android:textStyle="italic"
+            android:background="@color/colorAccent"/>
+    <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp" android:id="@+id/events_recycler_view"
+            tools:spanCount="5"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/text_events"/>
+    <TextView
+            android:text="@string/nothing_to_show"
+            android:layout_width="0dp"
+            android:layout_height="0dp" android:id="@+id/text_no_events"
+            app:layout_constraintEnd_toEndOf="@+id/events_recycler_view"
+            app:layout_constraintBottom_toBottomOf="@+id/events_recycler_view"
+            app:layout_constraintStart_toStartOf="@+id/events_recycler_view"
+            app:layout_constraintTop_toTopOf="@+id/events_recycler_view" android:textSize="30sp"
+            android:textAlignment="center" android:gravity="center_horizontal|center_vertical"/>
+</android.support.constraint.ConstraintLayout>
