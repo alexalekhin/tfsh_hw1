@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name" translatable="true">TFS Home work 1</string>
+    <string name="start_service" translatable="true">Start service</string>
+    <string name="start_second_activity" translatable="true">Start Auxiliary Activity</string>
+    <string name="calendar_events" translatable="true">Events</string>
+    <string name="contacts" translatable="true">Contacts</string>
+    <string name="go_to_contacts" translatable="true">Go to Contacts</string>
+    <string name="go_to_events" translatable="true">Go to Events</string>
+    <string name="nothing_to_show" translatable="true">Nothing to show :(</string>
+</resources>
