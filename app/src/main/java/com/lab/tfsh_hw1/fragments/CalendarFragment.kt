@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lab.tfsh_hw1.R
-import com.lab.tfsh_hw1.recycler_view_entities.CalendarAdapter
+import com.lab.tfsh_hw1.recyclerViewEntities.CalendarAdapter
 
 /**
  * Фрагмент для отображения событий календаря в виде RecyclerView
@@ -41,9 +41,7 @@ class CalendarFragment : Fragment() {
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         events = args?.getStringArrayList("events")
-
     }
-
 
     companion object {
         fun newInstance() =

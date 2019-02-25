@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lab.tfsh_hw1.R
-import com.lab.tfsh_hw1.recycler_view_entities.ContactsAdapter
+import com.lab.tfsh_hw1.recyclerViewEntities.ContactsAdapter
 
 /**
  * Фрагмент для отображения контактов в виде RecyclerView

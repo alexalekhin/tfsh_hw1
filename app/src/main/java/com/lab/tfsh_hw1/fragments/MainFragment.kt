@@ -26,9 +26,9 @@ class MainFragment : Fragment() {
     }
 
     private fun setupButtons(view: View) {
-        //Получаем кнопку для перехода на основное задание
+        // Получаем кнопку для перехода на основное задание
         val startActivityBtn = view.findViewById<Button>(R.id.start_activity_button)
-        //Прикрепляем к ней слушателя
+        // Прикрепляем к ней слушателя
         startActivityBtn.setOnClickListener {
             MainActivity.startAuxiliaryActivityForResult(activity as Activity)
         }
@@ -43,7 +43,7 @@ class MainFragment : Fragment() {
         }
 
         val contactsBtn = view.findViewById<Button>(R.id.contacts_button)
-        //Прикрепляем к ней слушателя
+        // Прикрепляем к ней слушателя
         contactsBtn.setOnClickListener {
             (activity as MainActivity).setViewPagerFragment(2)
             if ((activity as MainActivity).result == null) {

@@ -20,21 +20,6 @@ class AuxiliaryActivity : AppCompatActivity() {
 
     private val dataReceiver: DataReceiver? = DataReceiver()
 
-    private inner class DataReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            var contactsInfo: ArrayList<String>? = null
-            var eventsInfo: ArrayList<String>? = null
-            if (intent.hasExtra("contacts")) {
-                contactsInfo = intent.getStringArrayListExtra("contacts")
-            }
-            if (intent.hasExtra("events")) {
-                eventsInfo = intent.getStringArrayListExtra("events")
-            }
-            onResult(DataContractParcelable(contactsInfo!!, eventsInfo!!))
-        }
-    }
-
-
     override fun onStart() {
         super.onStart()
         registerEventsReceiver()
@@ -75,5 +60,19 @@ class AuxiliaryActivity : AppCompatActivity() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(SimpleIntentService.DATA_INFO)
         LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver!!, intentFilter)
+    }
+
+    private inner class DataReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            var contactsInfo: ArrayList<String>? = null
+            var eventsInfo: ArrayList<String>? = null
+            if (intent.hasExtra("contacts")) {
+                contactsInfo = intent.getStringArrayListExtra("contacts")
+            }
+            if (intent.hasExtra("events")) {
+                eventsInfo = intent.getStringArrayListExtra("events")
+            }
+            onResult(DataContractParcelable(contactsInfo!!, eventsInfo!!))
+        }
     }
 }

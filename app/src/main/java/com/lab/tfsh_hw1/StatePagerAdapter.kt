@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.PagerAdapter
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Класс, предоставляющий адаптер для заполнения страниц внутри ViewPager.
@@ -20,15 +20,9 @@ class StatePagerAdapter internal constructor(fm: FragmentManager) : FragmentStat
         fragmentTitleList.add(title)
     }
 
-    override fun getItem(i: Int): Fragment {
-        return fragmentList[i]
-    }
+    override fun getItem(i: Int) = fragmentList[i]
 
-    override fun getCount(): Int {
-        return fragmentList.size
-    }
+    override fun getCount() = fragmentList.size
 
-    override fun getItemPosition(`object`: Any): Int {
-        return PagerAdapter.POSITION_NONE
-    }
+    override fun getItemPosition(`object`: Any) = PagerAdapter.POSITION_NONE
 }

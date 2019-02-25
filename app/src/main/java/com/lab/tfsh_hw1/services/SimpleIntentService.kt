@@ -10,30 +10,18 @@ import com.lab.tfsh_hw1.DataContractParcelable
 
 class SimpleIntentService : IntentService("SimpleIntentService") {
 
-    companion object {
-        const val DATA_INFO = "data"
-    }
-
-
-    override fun onHandleIntent(intent: Intent?) {
-        //form data and send
-        sendData(DataContractParcelable(getContacts(), getEvents()))
-    }
-
+    override fun onHandleIntent(intent: Intent?) = sendData(DataContractParcelable(getContacts(), getEvents()))
 
     private fun sendData(data: DataContractParcelable?) {
         val intent = Intent(DATA_INFO)
-
         intent.putExtra("contacts", data!!.contactNames)
         intent.putExtra("events", data.eventNames)
-
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
     private fun getContacts(): ArrayList<String>? {
 
         val projection = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY
-
 
         val c = contentResolver.query(
             ContactsContract.Contacts.CONTENT_URI,
@@ -54,7 +42,6 @@ class SimpleIntentService : IntentService("SimpleIntentService") {
         } else {
             null
         }
-
     }
 
     private fun getEvents(): ArrayList<String>? {
@@ -82,5 +69,10 @@ class SimpleIntentService : IntentService("SimpleIntentService") {
             null
         }
     }
+
+    companion object {
+        const val DATA_INFO = "data"
+    }
+
 
 }
