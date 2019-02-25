@@ -1,9 +1,10 @@
 package com.lab.tfsh_hw1
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v4.view.PagerAdapter
+
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import java.util.ArrayList
 
 /**
@@ -11,7 +12,6 @@ import java.util.ArrayList
  * Использует фрагменты для управления каждой страницей.
  */
 class StatePagerAdapter internal constructor(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
-
     private val fragmentList = ArrayList<Fragment>()
     private val fragmentTitleList = ArrayList<String>()
 
@@ -31,5 +31,4 @@ class StatePagerAdapter internal constructor(fm: FragmentManager) : FragmentStat
     override fun getItemPosition(`object`: Any): Int {
         return PagerAdapter.POSITION_NONE
     }
-
 }

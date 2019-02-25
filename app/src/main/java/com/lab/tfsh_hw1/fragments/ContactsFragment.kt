@@ -1,13 +1,13 @@
 package com.lab.tfsh_hw1.fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lab.tfsh_hw1.R
 import com.lab.tfsh_hw1.recycler_view_entities.ContactsAdapter
 
@@ -15,10 +15,8 @@ import com.lab.tfsh_hw1.recycler_view_entities.ContactsAdapter
  * Фрагмент для отображения контактов в виде RecyclerView
  */
 class ContactsFragment : Fragment() {
-
     private var contacts: ArrayList<String>? = null
     private var recyclerView: RecyclerView? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,9 +28,8 @@ class ContactsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.contacts_recycler_view)
         recyclerView?.layoutManager = LinearLayoutManager(this.activity)
         setupContactAdapter()
-        if(contacts != null) {
+        if (contacts != null)
             view.findViewById<TextView>(R.id.text_no_contacts).visibility = View.INVISIBLE
-        }
         return view
     }
 
@@ -44,7 +41,6 @@ class ContactsFragment : Fragment() {
     override fun setArguments(args: Bundle?) {
         super.setArguments(args)
         contacts = args?.getStringArrayList("contacts")
-
     }
 
     companion object {

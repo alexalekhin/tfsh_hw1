@@ -1,22 +1,20 @@
 package com.lab.tfsh_hw1.recycler_view_entities
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.lab.tfsh_hw1.R
 
 /**
  * Адаптер к RecyclerView для отображения контактов
  */
 class ContactsAdapter(arrayList: ArrayList<String>) : RecyclerView.Adapter<ContactsAdapter.ContactViewHolder>() {
-
-    private var contacts: ArrayList<String>? = arrayList
+    private val contacts: ArrayList<String>? = arrayList
 
     class ContactViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var textView: TextView? = itemView.findViewById(R.id.contact_name)
-
+        val textView: TextView? = itemView.findViewById(R.id.contact_name)
     }
 
     override fun getItemCount(): Int {
@@ -33,5 +31,4 @@ class ContactsAdapter(arrayList: ArrayList<String>) : RecyclerView.Adapter<Conta
         val view = LayoutInflater.from(p0.context).inflate(R.layout.contact_view, p0, false)
         return ContactViewHolder(view)
     }
-
 }

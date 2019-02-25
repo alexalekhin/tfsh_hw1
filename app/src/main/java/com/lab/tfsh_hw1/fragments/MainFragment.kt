@@ -2,12 +2,12 @@ package com.lab.tfsh_hw1.fragments
 
 import android.app.Activity
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.lab.tfsh_hw1.R
 import com.lab.tfsh_hw1.activities.MainActivity
 
@@ -16,7 +16,6 @@ import com.lab.tfsh_hw1.activities.MainActivity
  * Стартовый фрагмент
  */
 class MainFragment : Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

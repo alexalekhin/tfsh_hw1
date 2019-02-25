@@ -4,14 +4,14 @@ import android.app.IntentService
 import android.content.Intent
 import android.provider.CalendarContract
 import android.provider.ContactsContract
-import android.support.v4.content.LocalBroadcastManager
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.lab.tfsh_hw1.DataContractParcelable
 
 
 class SimpleIntentService : IntentService("SimpleIntentService") {
 
     companion object {
-        var DATA_INFO = "data"
+        const val DATA_INFO = "data"
     }
 
 

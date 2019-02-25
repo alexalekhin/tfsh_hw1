@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.support.v4.content.LocalBroadcastManager
-import android.support.v7.app.AppCompatActivity
 import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.lab.tfsh_hw1.DataContractParcelable
 import com.lab.tfsh_hw1.R
 import com.lab.tfsh_hw1.services.SimpleIntentService
@@ -18,7 +18,7 @@ import com.lab.tfsh_hw1.services.SimpleIntentService
  */
 class AuxiliaryActivity : AppCompatActivity() {
 
-    private var dataReceiver: DataReceiver? = DataReceiver()
+    private val dataReceiver: DataReceiver? = DataReceiver()
 
     private inner class DataReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -26,12 +26,10 @@ class AuxiliaryActivity : AppCompatActivity() {
             var eventsInfo: ArrayList<String>? = null
             if (intent.hasExtra("contacts")) {
                 contactsInfo = intent.getStringArrayListExtra("contacts")
-
             }
             if (intent.hasExtra("events")) {
                 eventsInfo = intent.getStringArrayListExtra("events")
             }
-
             onResult(DataContractParcelable(contactsInfo!!, eventsInfo!!))
         }
     }
@@ -40,7 +38,6 @@ class AuxiliaryActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         registerEventsReceiver()
-
     }
 
     override fun onStop() {
@@ -75,7 +72,6 @@ class AuxiliaryActivity : AppCompatActivity() {
     }
 
     private fun registerEventsReceiver() {
-        dataReceiver = DataReceiver()
         val intentFilter = IntentFilter()
         intentFilter.addAction(SimpleIntentService.DATA_INFO)
         LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver!!, intentFilter)
