@@ -55,7 +55,6 @@ class MainFragment : Fragment() {
 
     }
 
-
     companion object {
         fun newInstance(): MainFragment =
             MainFragment().apply {

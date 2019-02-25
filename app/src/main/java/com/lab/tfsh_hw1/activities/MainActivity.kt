@@ -10,9 +10,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.view.View
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import com.lab.tfsh_hw1.DataContractParcelable
 import com.lab.tfsh_hw1.R
@@ -64,17 +61,13 @@ class MainActivity : AppCompatActivity() {
         //Проверяем возможность восстановить результаты работы, если они доступны
         if (savedInstanceState?.getParcelable<DataContractParcelable>("result") == null) {
             setupViewPager(this.viewPager)
-
         } else
             restoreViewPager(this.viewPager, savedInstanceState)
 
 
-        if (checkPermission(this, Manifest.permission.READ_CONTACTS)
-            && checkPermission(this, Manifest.permission.READ_CALENDAR)
-        ) {
-            //есть разрешения(дополнительных действий не требуется)
-
-        } else //нет разрешений
+        if (!(checkPermission(this, Manifest.permission.READ_CONTACTS)
+                    && checkPermission(this, Manifest.permission.READ_CALENDAR))
+        )//нет разрешений
             requestPermission(this, permissions, REQUEST_RUNTIME_PERMISSION)
 
     }
@@ -156,11 +149,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_RUNTIME_PERMISSION) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED
-                && grantResults[1] == PackageManager.PERMISSION_GRANTED
+            if (!(grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED)
             ) {
-                //Разрешения получены(доп.действий не требуется)
-            } else {
                 Toast.makeText(
                     this,
                     "Permissions for CALENDAR and CONTACTS are not granted!\nCheck application settings.",
