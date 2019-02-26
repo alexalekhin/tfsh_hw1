@@ -18,7 +18,7 @@ import com.lab.tfsh_hw1.services.SimpleIntentService
  */
 class AuxiliaryActivity : AppCompatActivity() {
 
-    private val dataReceiver: DataReceiver? = DataReceiver()
+    private val dataReceiver: DataReceiver = DataReceiver()
 
     override fun onStart() {
         super.onStart()
@@ -26,7 +26,7 @@ class AuxiliaryActivity : AppCompatActivity() {
     }
 
     override fun onStop() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(dataReceiver!!)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(dataReceiver)
         super.onStop()
     }
 
@@ -59,20 +59,24 @@ class AuxiliaryActivity : AppCompatActivity() {
     private fun registerEventsReceiver() {
         val intentFilter = IntentFilter()
         intentFilter.addAction(SimpleIntentService.DATA_INFO)
-        LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver!!, intentFilter)
+        LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver, intentFilter)
     }
 
     private inner class DataReceiver : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            var contactsInfo: ArrayList<String>? = null
-            var eventsInfo: ArrayList<String>? = null
-            if (intent.hasExtra("contacts")) {
-                contactsInfo = intent.getStringArrayListExtra("contacts")
-            }
-            if (intent.hasExtra("events")) {
-                eventsInfo = intent.getStringArrayListExtra("events")
-            }
-            onResult(DataContractParcelable(contactsInfo!!, eventsInfo!!))
+            val contactsInfo: List<String>? =
+                if (intent.hasExtra("contacts"))
+                    intent.getStringArrayListExtra("contacts")
+                else {
+                    null
+                }
+            val eventsInfo: List<String>? =
+                if (intent.hasExtra("events")) {
+                    intent.getStringArrayListExtra("events")
+                } else {
+                    null
+                }
+            onResult(DataContractParcelable(contactsInfo, eventsInfo))
         }
     }
 }

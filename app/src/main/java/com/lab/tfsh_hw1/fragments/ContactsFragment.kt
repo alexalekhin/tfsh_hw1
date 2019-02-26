@@ -28,8 +28,9 @@ class ContactsFragment : Fragment() {
         recyclerView = view.findViewById(R.id.contacts_recycler_view)
         recyclerView?.layoutManager = LinearLayoutManager(this.activity)
         setupContactAdapter()
-        if (contacts != null)
+        if (contacts != null) {
             view.findViewById<TextView>(R.id.text_no_contacts).visibility = View.INVISIBLE
+        }
         return view
     }
 
@@ -44,9 +45,10 @@ class ContactsFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() =
+        fun newInstance(contactNames: ArrayList<String>?) =
             ContactsFragment().apply {
                 arguments = Bundle().apply {
+                    putStringArrayList("contacts", contactNames)
                 }
             }
     }

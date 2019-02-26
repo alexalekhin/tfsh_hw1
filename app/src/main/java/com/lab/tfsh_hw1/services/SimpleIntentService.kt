@@ -2,6 +2,7 @@ package com.lab.tfsh_hw1.services
 
 import android.app.IntentService
 import android.content.Intent
+import android.os.Parcelable
 import android.provider.CalendarContract
 import android.provider.ContactsContract
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -14,8 +15,8 @@ class SimpleIntentService : IntentService("SimpleIntentService") {
 
     private fun sendData(data: DataContractParcelable?) {
         val intent = Intent(DATA_INFO)
-        intent.putExtra("contacts", data!!.contactNames)
-        intent.putExtra("events", data.eventNames)
+        intent.putExtra("contacts", data!!.contactNames as ArrayList<*>)
+        intent.putExtra("events", data.eventNames as ArrayList<*>)
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 

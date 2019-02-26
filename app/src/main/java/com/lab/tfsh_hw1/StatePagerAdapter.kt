@@ -18,6 +18,14 @@ class StatePagerAdapter internal constructor(fm: FragmentManager) : FragmentStat
     internal fun addFragment(fragment: Fragment, title: String) {
         fragmentList.add(fragment)
         fragmentTitleList.add(title)
+        notifyDataSetChanged()
+    }
+
+    internal fun removeFragmentAt(position: Int) {
+        fragmentList.removeAt(position)
+        fragmentTitleList.removeAt(position)
+        notifyDataSetChanged()
+
     }
 
     override fun getItem(i: Int) = fragmentList[i]

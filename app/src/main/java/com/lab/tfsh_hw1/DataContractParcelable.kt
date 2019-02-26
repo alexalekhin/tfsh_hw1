@@ -9,6 +9,6 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class DataContractParcelable(
-    val contactNames: ArrayList<String>?,
-    val eventNames: ArrayList<String>?
+    val contactNames: List<String>?,
+    val eventNames: List<String>?
 ) : Parcelable

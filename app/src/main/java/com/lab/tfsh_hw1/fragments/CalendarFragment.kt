@@ -27,8 +27,9 @@ class CalendarFragment : Fragment() {
         recyclerView = view.findViewById(R.id.events_recycler_view)
         recyclerView?.layoutManager = LinearLayoutManager(this.activity)
         setupCalendarAdapter()
-        if (events != null)
+        if (events != null) {
             view.findViewById<TextView>(R.id.text_no_events).visibility = View.INVISIBLE
+        }
         return view
 
     }
@@ -44,9 +45,10 @@ class CalendarFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() =
+        fun newInstance(eventNames: ArrayList<String>?) =
             CalendarFragment().apply {
                 arguments = Bundle().apply {
+                    putStringArrayList("events", eventNames)
                 }
             }
     }

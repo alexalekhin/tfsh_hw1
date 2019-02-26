@@ -1,21 +1,31 @@
 package com.lab.tfsh_hw1.fragments
 
-import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.lab.tfsh_hw1.R
-import com.lab.tfsh_hw1.activities.MainActivity
 
 
 /**
  * Стартовый фрагмент
  */
 class MainFragment : Fragment() {
+
+    private var listener: OnFragmentInteractionListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,36 +40,30 @@ class MainFragment : Fragment() {
         val startActivityBtn = view.findViewById<Button>(R.id.start_activity_button)
         // Прикрепляем к ней слушателя
         startActivityBtn.setOnClickListener {
-            MainActivity.startAuxiliaryActivityForResult(activity as Activity)
+            listener?.onStartButtonClicked()
         }
 
         val eventsBtn = view.findViewById<Button>(R.id.events_button)
         eventsBtn.setOnClickListener {
-            (activity as MainActivity).setViewPagerFragment(1)
-            if ((activity as MainActivity).result == null) {
-                Toast.makeText(activity, "Use \"START AUXILIARY ACTIVITY\" first!", Toast.LENGTH_SHORT)
-                    .show()
-            }
+            listener?.setViewPagerFragment(1)
         }
 
         val contactsBtn = view.findViewById<Button>(R.id.contacts_button)
         // Прикрепляем к ней слушателя
         contactsBtn.setOnClickListener {
-            (activity as MainActivity).setViewPagerFragment(2)
-            if ((activity as MainActivity).result == null) {
-                Toast.makeText(activity, "Use \"START AUXILIARY ACTIVITY\" first!", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
+            listener?.setViewPagerFragment(2)
 
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
     }
 
     companion object {
         fun newInstance(): MainFragment =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+            MainFragment()
     }
 }
 

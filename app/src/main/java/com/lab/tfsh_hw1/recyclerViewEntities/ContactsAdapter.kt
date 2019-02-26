@@ -10,19 +10,21 @@ import com.lab.tfsh_hw1.R
 /**
  * Адаптер к RecyclerView для отображения контактов
  */
-class ContactsAdapter(arrayList: ArrayList<String>) : RecyclerView.Adapter<ContactsAdapter.ContactViewHolder>() {
-    private val contacts: ArrayList<String>? = arrayList
+class ContactsAdapter(private val contacts: ArrayList<String>) :
+    RecyclerView.Adapter<ContactsAdapter.ContactViewHolder>() {
 
-    override fun getItemCount() = contacts!!.size
+    override fun getItemCount() = contacts.size
 
-    override fun onBindViewHolder(p0: ContactsAdapter.ContactViewHolder, p1: Int) {
-        val str: String? = contacts?.get(p1)
+    override fun onBindViewHolder(contactLayoutHolder: ContactsAdapter.ContactViewHolder, contactNum: Int) {
+        val str: String? = contacts[contactNum]
         if (str != null)
-            p0.textView?.text = str
+            contactLayoutHolder.textView?.text = str
     }
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ContactsAdapter.ContactViewHolder {
-        val view = LayoutInflater.from(p0.context).inflate(R.layout.contact_view, p0, false)
+    override fun onCreateViewHolder(contactLayout: ViewGroup, viewType: Int): ContactsAdapter.ContactViewHolder {
+        val view = LayoutInflater
+            .from(contactLayout.context)
+            .inflate(R.layout.contact_view, contactLayout, false)
         return ContactViewHolder(view)
     }
 

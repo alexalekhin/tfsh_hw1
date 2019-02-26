@@ -6,10 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import com.lab.tfsh_hw1.DataContractParcelable
 import com.lab.tfsh_hw1.R
@@ -17,13 +17,14 @@ import com.lab.tfsh_hw1.StatePagerAdapter
 import com.lab.tfsh_hw1.fragments.CalendarFragment
 import com.lab.tfsh_hw1.fragments.ContactsFragment
 import com.lab.tfsh_hw1.fragments.MainFragment
+import com.lab.tfsh_hw1.fragments.OnFragmentInteractionListener
 
 /**
  * Основная Activity, в которой отображаются результаты работы сервиса
  */
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnFragmentInteractionListener {
     private var viewPager: ViewPager? = null
-    private var statePagerAdapter: StatePagerAdapter? = null
+    private var viewPagerAdapter: StatePagerAdapter? = null
     var result: DataContractParcelable? = null
     // Массив необходимых разрешений, которые будут запрошены у пользователя
     private val permissions = arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.READ_CALENDAR)
@@ -31,19 +32,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        this.statePagerAdapter = StatePagerAdapter(supportFragmentManager)
         this.viewPager = findViewById(R.id.base_container)
         // Проверяем возможность восстановить результаты работы, если они доступны
         if (savedInstanceState?.getParcelable<DataContractParcelable>("result") == null) {
             setupViewPager(this.viewPager)
-        } else
+        } else {
             restoreViewPager(this.viewPager, savedInstanceState)
-
+        }
         if (!(checkPermission(this, Manifest.permission.READ_CONTACTS)
                     && checkPermission(this, Manifest.permission.READ_CALENDAR))
-        )// нет разрешений
+        ) { // нет разрешений
             requestPermission(this, permissions, REQUEST_RUNTIME_PERMISSION)
-
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -52,38 +52,39 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewPager(viewPager: ViewPager?) {
-        val adapter = StatePagerAdapter(supportFragmentManager)
-        adapter.addFragment(MainFragment.newInstance(), "MainFragment")
-        adapter.addFragment(CalendarFragment.newInstance(), "CalendarFragment")
-        adapter.addFragment(ContactsFragment.newInstance(), "ContactsFragment")
+        val adapter = StatePagerAdapter(supportFragmentManager).apply {
+            addFragment(MainFragment.newInstance(), "MainFragment")
+            addFragment(CalendarFragment.newInstance(null), "CalendarFragment")
+            addFragment(ContactsFragment.newInstance(null), "ContactsFragment")
+        }
         viewPager?.adapter = adapter
+        viewPagerAdapter = adapter
     }
 
     /**
      * Восстанавливаем вёрстку по ранее полученным данным
      */
     private fun restoreViewPager(viewPager: ViewPager?, savedInstanceState: Bundle?) {
+        this.result = savedInstanceState?.getParcelable("result")
         val adapter = StatePagerAdapter(supportFragmentManager).apply {
             addFragment(MainFragment.newInstance(), "MainFragment")
-            addFragment(CalendarFragment.newInstance(), "CalendarFragment")
-            addFragment(ContactsFragment.newInstance(), "ContactsFragment")
+            addFragment(CalendarFragment.newInstance(result?.eventNames as ArrayList<String>?), "CalendarFragment")
+            addFragment(ContactsFragment.newInstance(result?.contactNames as ArrayList<String>?), "ContactsFragment")
         }
         viewPager?.adapter = adapter
-        this.result = savedInstanceState?.getParcelable("result")
-        var bundle = Bundle()
-        bundle.putStringArrayList("events", result?.eventNames)
-        // Заполняем события
-        (viewPager!!.adapter!! as StatePagerAdapter).getItem(1).arguments = bundle
-        // Заполняем  контакты
-        bundle = Bundle()
-        bundle.putStringArrayList("contacts", result?.contactNames)
-        (viewPager.adapter!! as StatePagerAdapter).getItem(2).arguments = bundle
-        // Обновляем адаптер
-        viewPager.adapter!!.notifyDataSetChanged()
+        viewPagerAdapter = adapter
     }
 
-    fun setViewPagerFragment(fragmentNum: Int) {
+    override fun setViewPagerFragment(fragmentNum: Int) {
         this.viewPager?.currentItem = fragmentNum
+        if (result == null) {
+            Toast.makeText(this, "Use \"START AUXILIARY ACTIVITY\" first!", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    override fun onStartButtonClicked() {
+        startAuxiliaryActivityForResult(this)
     }
 
     /**
@@ -96,16 +97,20 @@ class MainActivity : AppCompatActivity() {
             CONFIRMATION_REQUEST_CODE -> when (resultCode) {
                 Activity.RESULT_OK -> {
                     result = data?.getParcelableExtra(CONFIRM_DATA)
-                    var bundle = Bundle()
-                    bundle.putStringArrayList("events", result?.eventNames)
-                    // Заполняем события
-                    (viewPager!!.adapter!! as StatePagerAdapter).getItem(1).arguments = bundle
+                    viewPagerAdapter?.removeFragmentAt(2)
+                    viewPagerAdapter?.removeFragmentAt(1)
+                    // Заполняем  календарь
+                    viewPagerAdapter
+                        ?.addFragment(
+                            CalendarFragment.newInstance(result?.eventNames as ArrayList<String>?),
+                            "CalendarFragment"
+                        )
                     // Заполняем  контакты
-                    bundle = Bundle()
-                    bundle.putStringArrayList("contacts", result?.contactNames)
-                    (viewPager!!.adapter!! as StatePagerAdapter).getItem(2).arguments = bundle
-                    // Обновляем адаптер
-                    viewPager!!.adapter!!.notifyDataSetChanged()
+                    viewPagerAdapter
+                        ?.addFragment(
+                            ContactsFragment.newInstance(result?.contactNames as ArrayList<String>?),
+                            "ContactsFragment"
+                        )
                 }
                 Activity.RESULT_CANCELED -> {
                     Toast.makeText(
@@ -155,10 +160,9 @@ class MainActivity : AppCompatActivity() {
         /**
          * Метод запуска вспомогательной Activity с ожиданием результата
          */
-        fun startAuxiliaryActivityForResult(activity: Activity) {
+        fun startAuxiliaryActivityForResult(activity: Context) {
             val intent = Intent(activity, AuxiliaryActivity::class.java)
-            activity.startActivityForResult(intent, CONFIRMATION_REQUEST_CODE)
+            (activity as Activity).startActivityForResult(intent, CONFIRMATION_REQUEST_CODE)
         }
-
     }
 }
